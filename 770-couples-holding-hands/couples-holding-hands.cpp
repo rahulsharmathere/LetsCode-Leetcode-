@@ -1,57 +1,62 @@
-class disjointSet {
-    private:
-        vector<int>par;
-        vector<int>rank;
+class disjointSet{
     public:
+        vector<int>par;
+        vector<int>size;
         disjointSet(int n){
+            size.resize(n,1);
             par.resize(n);
-            rank.resize(n,0);
             for(int i=0;i<n;i++)par[i]=i;
         }
-        int findUltPar(int u){
-            if(par[u]==u)return u;
-            return par[u]=findUltPar(par[u]);
-        }
-
-        void unionByRank(int u,int v){
-            int u_par=findUltPar(u);
-            int v_par=findUltPar(v);
-            if( u_par == v_par)return ;
-            if(rank[u_par] < rank[v_par]){
-                par[u_par]=v_par;
-            }else if(rank[u_par] > rank[v_par]){
-                par[v_par]=u_par;
-            }else {
-                par[v_par]=u_par;
-                rank[u_par]++;
+        void unionBySize(int u,int v){
+            int parU=ultPar(u);
+            int parV=ultPar(v);
+            if(parU==parV)return;
+            
+            if(size[parU] < size[parV]){
+                par[parU]=parV;
+                size[parV]+=size[parU];
             }
+            else{
+                par[parV]=parU;
+                size[parU]+=size[parV];
+            }
+            
         }
-
         bool isConnected(int u,int v){
-            if(findUltPar(u) == findUltPar(v))return true;
-            else return false;
+            return (ultPar(u)==ultPar(v));
+        }
+        int ultPar(int u){
+            if(u==par[u])return u;
+            return par[u]=ultPar(par[u]);
         }
 };
 class Solution {
 public:
     int minSwapsCouples(vector<int>& row) {
-        int n = row.size() / 2;
-        disjointSet uf(n);
+        int n=row.size()/2;
+        disjointSet ds(2*n);
 
-        for (int i = 0; i < n; ++i) {
-            int c1 = row[2 * i] / 2;
-            int c2 = row[2 * i + 1] / 2;
-            uf.unionByRank(c1, c2);
+        for(int i=0;i<2*n;i+=2){
+            ds.unionBySize(i,i+1);
+        }
+        for(int i=0;i<2*n;i+=2){
+            ds.unionBySize(row[i],row[i+1]);
         }
 
-        int connectedComponents = 0;
-        for (int i = 0; i < n; ++i) {
-            if (uf.findUltPar(i) == i) {
-                connectedComponents++;
-            }
+        unordered_map<int, unordered_set<int>> compToCouples;
+        for(int i=0;i<2*n;i++){
+            int parent = ds.ultPar(i);
+            int couple_id = i / 2; // each couple = (2k, 2k+1)
+            compToCouples[parent].insert(couple_id);
         }
 
-        return n - connectedComponents;
-        
+        int swaps = 0;
+        for (auto &p : compToCouples)
+            swaps += (int)p.second.size() - 1;
+
+        return swaps;
+
+
+
     }
 };
