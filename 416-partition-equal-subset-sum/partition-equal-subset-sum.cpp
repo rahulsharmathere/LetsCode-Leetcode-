@@ -1,20 +1,5 @@
 class Solution {
 public:
-    bool solve(vector<int>&arr,int sum,int i,vector<vector<int>>&DP){
-        int n=arr.size();
-        if(sum==0)return true;
-        if(i>=n-1)return (arr[i]==sum);
-        if(DP[i][sum]!=-1)return DP[i][sum];
-        //take
-        bool opt1 = false;
-        if(sum>=arr[i])
-             opt1=solve(arr,sum-arr[i],i+1,DP);
-        
-        //not take
-        bool opt2 = solve(arr,sum,i+1,DP);
-        
-        return DP[i][sum]=(opt1 || opt2);
-    }
     bool canPartition(vector<int>& arr) {
         // if you can find a sum of target=nums/2 in this array
         int n=arr.size();
@@ -23,7 +8,23 @@ public:
         for(auto it:arr)sum+=it;
         if(sum%2!=0)return false;
         sum=sum/2;
-        vector<vector<int>>DP(n,vector<int>(sum+1,-1));
-        return solve(arr,sum,i,DP);
+        vector<vector<bool>>DP(n,vector<bool>(sum+1,false));
+        //base
+        for(int i=0;i<n;i++)DP[i][0]=true;
+        if(arr[0]<=sum)DP[0][arr[0]]=true;
+
+        for(int i=1;i<n;i++){
+            for(int target=1;target<=sum;target++){
+                bool take = false;
+                if(target >= arr[i]) {
+                    take = DP[i-1][target-arr[i]];
+                }
+                bool leave=DP[i-1][target];
+                
+                DP[i][target] = (take||leave);
+            }
+        }
+
+        return DP[n-1][sum];
     }
 };
