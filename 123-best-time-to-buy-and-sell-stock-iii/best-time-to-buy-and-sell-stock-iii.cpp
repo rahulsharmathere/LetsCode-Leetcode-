@@ -3,15 +3,18 @@ public:
 
     int maxProfit(vector<int>& prices) {
         int n=prices.size();
-        vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(2, vector<int>(3, 0)));// index,hold,cap
+        //sapce optimization
+        vector<vector<int>>ahead(2, vector<int>(3, 0));// hold,cap
+        vector<vector<int>>curr(2, vector<int>(3, 0));// hold,cap
+        
         for(int hold=0;hold<2;hold++){
             for(int cap=0;cap<3;cap++){
-                dp[n][hold][cap]=0;
+                ahead[hold][cap]=0;
             }
         }
         for(int i=0;i<n;i++){
             for(int hold=0;hold<2;hold++){
-                dp[i][hold][0]=0;
+                ahead[hold][0]=0;
             }
         }
         // however these 2 base cases are already done in initialization but just for understanding
@@ -23,27 +26,28 @@ public:
                     //try all combinations:
                     if(hold){
                         //sell
-                        int sell=prices[i] + dp[i+1][!hold][cap-1];//where you add the profit
+                        int sell=prices[i] + ahead[0][cap-1];//where you add the profit
 
                         //skip
-                        int skip=dp[i+1][hold][cap];
+                        int skip=ahead[1][cap];
 
-                        dp[i][hold][cap]= max(sell,skip);
+                        curr[1][cap]= max(sell,skip);
 
                     }else{
                         //buy
-                        int buy= -prices[i] + dp[i+1][!hold][cap];
+                        int buy= -prices[i] + ahead[1][cap];
                         //skip
-                        int skip=dp[i+1][hold][cap];
+                        int skip=ahead[0][cap];
 
-                        dp[i][hold][cap]=  max(buy,skip);
+                        curr[0][cap]=  max(buy,skip);
 
                     }
                 }
+                ahead=curr;
 
             }
         }
-        return dp[0][0][2];
+        return ahead[0][2];
 
 
     }
