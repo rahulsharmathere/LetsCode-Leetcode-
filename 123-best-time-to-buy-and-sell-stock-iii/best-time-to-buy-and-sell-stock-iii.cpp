@@ -43,9 +43,9 @@ public:
 
                     }
                 }
-                ahead=curr;
 
             }
+            ahead=curr;
         }
         return ahead[0][2];
 
