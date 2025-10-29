@@ -7,16 +7,17 @@ public:
         vector<vector<int>>ahead(2, vector<int>(3, 0));// hold,cap
         vector<vector<int>>curr(2, vector<int>(3, 0));// hold,cap
         
-        for(int hold=0;hold<2;hold++){
-            for(int cap=0;cap<3;cap++){
-                ahead[hold][cap]=0;
-            }
-        }
-        for(int i=0;i<n;i++){
-            for(int hold=0;hold<2;hold++){
-                ahead[hold][0]=0;
-            }
-        }
+        //base cases (not needed here)
+        // for(int hold=0;hold<2;hold++){
+        //     for(int cap=0;cap<3;cap++){
+        //         ahead[hold][cap]=0;
+        //     }
+        // }
+        // for(int i=0;i<n;i++){
+        //     for(int hold=0;hold<2;hold++){
+        //         ahead[hold][0]=0;
+        //     }
+        // }
         // however these 2 base cases are already done in initialization but just for understanding
 
         for(int i=n-1;i>=0;i--){
