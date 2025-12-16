@@ -8,10 +8,10 @@ public:
         int ans=0;
         for(int i=1;i<=n;i++){
             for(int j=i+1;j<=n;j++){
-                int sum=nums[i]+nums[j];
-                for(int k=j+1;k<=n;k++){
-                    if(sum==nums[k])ans++;
-                }
+                
+                int s=i*i+j*j;
+                int c=sqrt(s);
+                if(c*c==s && c<=n)ans++;
             }
         }
         return ans*2;
