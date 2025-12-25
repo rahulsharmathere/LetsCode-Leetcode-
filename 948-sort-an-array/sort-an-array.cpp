@@ -1,44 +1,37 @@
 class Solution {
 public:
-    void merge(vector<int>& nums,int low,int mid,int high){
-        int left=low;
-        int right=mid+1;
-        vector<int>temp;
+    int helper(vector<int>& nums,int low,int high){
+        int randomPivot = low + rand() % (high - low + 1);
+        swap(nums[low], nums[randomPivot]);//random pivot
+        int pivot = nums[low];
+        int i=low;
+        int j=high;
 
-        while(left<=mid && right<=high){
-            if(nums[left]<=nums[right]){
-                temp.push_back(nums[left]);
-                left++;
-            }else{
-                temp.push_back(nums[right]);
-                right++;
+        while(i<j){
+            while(  i<=high && nums[i]<=pivot ){
+                i++;
             }
+            while(j>=low && nums[j]>pivot ){
+                j--;
+            }
+            if(i<j)swap(nums[i],nums[j]);
         }
-        while(left<=mid){
-            temp.push_back(nums[left]);
-            left++;
-        }
-        while(right<=high){
-            temp.push_back(nums[right]);
-            right++;
-        }
-
-        for(int i=low;i<=high;i++){
-            nums[i]=temp[i-low];
-        }
+        swap(nums[low],nums[j]);
+        int partitionIndex=j;
+        return partitionIndex;
 
     }
-    void mergeSort(vector<int>&nums,int low,int high){
-        if(low>=high)return;
-        int mid=(low+high)/2;
-        mergeSort(nums,low,mid);
-        mergeSort(nums,mid+1,high);
-        merge(nums,low,mid,high);
+    void quickSort(vector<int>&nums,int low,int high){
+        if(low<high){
+            int partitionIndex=helper(nums,low,high);
+            quickSort(nums,low,partitionIndex-1);
+            quickSort(nums,partitionIndex+1,high);
+        }
     }
     vector<int> sortArray(vector<int>& nums) {
         int n=nums.size();
-        //Merge sort
-        mergeSort(nums,0,n-1);
+        //QUICK sort
+        quickSort(nums,0,n-1);
         return nums;
     }
 };
