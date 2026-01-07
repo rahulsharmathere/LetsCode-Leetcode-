@@ -22,7 +22,6 @@ public:
         int MOD=1e9+7;
         vector<long long>sums;
         long long sum = dfs(root,sums);
-        long long maxi=*max_element(sums.begin(),sums.end());
         long long ans=INT_MIN;
         for(auto it:sums){
             ans=max(ans,(it*(sum-it)));
