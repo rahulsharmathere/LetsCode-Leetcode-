@@ -9,24 +9,26 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
+ class Solution {
 public:
-    void helper(TreeNode* root,string s,vector<string>&ans){
-        char c=root->val + 'a';
-        s+=c;
-        if(!root->right && !root->left){
-            reverse(s.begin(),s.end());
-            ans.push_back(s);
+    string ans = "";
+
+    void helper(TreeNode* root, string s) {
+        char c = root->val + 'a';
+        s = c + s;  
+
+        if(!root->left && !root->right) {
+            if(ans == "" || s < ans)
+                ans = s;
             return;
         }
-        if(root->left)helper(root->left,s,ans);
-        if(root->right)helper(root->right,s,ans);
+
+        if(root->left)  helper(root->left, s);
+        if(root->right) helper(root->right, s);
     }
+
     string smallestFromLeaf(TreeNode* root) {
-        vector<string>ans;
-        string s="";
-        helper(root,s,ans);
-        sort(ans.begin(),ans.end());
-        return ans[0];
+        helper(root, "");
+        return ans;
     }
 };
