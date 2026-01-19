@@ -11,21 +11,21 @@
  */
 class Solution {
 public:
-    void inorder(TreeNode*root,vector<int>&nums){
+    void inorder(TreeNode*root,TreeNode*&prev,int &mini){
         if(!root)return ;
-        inorder(root->left,nums);
-        nums.push_back(root->val);
-        inorder(root->right,nums);
+        inorder(root->left,prev,mini);
+        if(prev){
+            mini=min(mini,abs(prev->val-root->val));
+        }
+        prev=root;
+        inorder(root->right,prev,mini);
     }
     int minDiffInBST(TreeNode* root) {
         // minimum difference between any 2 nodes
         // it will be between 2 consecutive elements
-        vector<int>nums;
-        inorder(root,nums);
         int mini=INT_MAX;
-        for(int i=1;i<nums.size();i++){
-            mini=min(mini,abs(nums[i]-nums[i-1]));
-        }
+        TreeNode*prev=NULL;
+        inorder(root,prev,mini);
         return mini;
     }
 };
