@@ -25,36 +25,16 @@ public:
                 if(curr->left)q.push(curr->left);
                 if(curr->right)q.push(curr->right);
             }
-            int n = temp.size();
-
-            vector<pair<int,int>> v;
-            for (int i = 0; i < n; i++)
-                v.push_back({temp[i], i});
-
-            sort(v.begin(), v.end());
-
-            vector<bool> visited(n, false);
-            int swaps = 0;
-
-            for (int i = 0; i < n; i++) {
-
-                if (visited[i] || v[i].second == i)
-                    continue;
-
-                int cycleSize = 0;
-                int j = i;
-
-                while (!visited[j]) {
-                    visited[j] = true;
-                    j = v[j].second;
-                    cycleSize++;
-                }
-
-                if (cycleSize > 1)
-                    swaps += (cycleSize - 1);
+            map<int, int> reverseIndex;
+            for(int i = 0; i < temp.size(); ++i) reverseIndex[temp[i]] = i;
+            int i = 0, ans = 0;
+            for(auto [k,v] : reverseIndex){
+                if(v == i) { i++; continue; }
+                reverseIndex[temp[i]] = v;
+                swap(temp[i], temp[v]);
+                ans++; i++;
             }
-
-            cnt+=swaps;
+            cnt+=ans;
         }
         return cnt;
     }
