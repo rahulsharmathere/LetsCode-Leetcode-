@@ -48,7 +48,6 @@ public:
             int u=roads[i][0];
             int v=roads[i][1];
             int d=roads[i][2];
-            // ds.unionBySize(u,v);
             if(ds.isConnected(1,u))ans=min(ans,d);
             
         }
