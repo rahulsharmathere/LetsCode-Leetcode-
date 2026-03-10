@@ -29,7 +29,7 @@ public:
         for(int r = 0; r < rows; r++){
             for(int c = 0; c < cols; c++){
                 int idx = r * cols + c;
-                result[r][c] = (1LL * pref[idx] * suff[idx]) % MOD;
+                result[r][c] = (pref[idx] * suff[idx]) % MOD;
             }
         }
 
