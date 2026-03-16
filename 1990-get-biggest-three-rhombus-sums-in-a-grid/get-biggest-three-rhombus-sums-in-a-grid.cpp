@@ -10,10 +10,9 @@ public:
                 for(int k=1; ;k++){
                     if(i-k<0 || i+k>=n || j-k<0 || j+k>=m)break;
                     int sum=0;
-                    int x=i-k;
-                    int y=j;
+                    
                     for(int t=0;t<k;t++){
-                        sum+=grid[x+t][y+t];
+                        sum+=grid[i-k+t][j+t];
                     }
                     for(int t=0;t<k;t++){
                         sum+=grid[i+t][j+k-t];
