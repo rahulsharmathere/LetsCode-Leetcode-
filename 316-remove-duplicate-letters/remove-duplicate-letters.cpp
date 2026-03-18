@@ -11,24 +11,14 @@ public:
         for(int i=0;i<n;i++){
             char c=s[i];
             freq[c-'a']--;
-        if(vis[c-'a']==1)continue;
-            if(st.empty()){
-                st.push(c);
-                vis[c-'a']=1;
-                continue;
-            }
+            if(vis[c-'a']==1)continue;
             char t=st.top();
-            if(c>t && vis[c-'a']==0){
-                st.push(c);
-                vis[c-'a']=1;
-            }else if(vis[c-'a']==0){
-                while(!st.empty() && c<st.top() && freq[st.top()-'a']>0){
-                    vis[st.top()-'a']=0;
-                    st.pop();
-                }
-                st.push(c);
-                vis[c-'a']=1;
+            while(!st.empty() && c<st.top() && freq[st.top()-'a']>0){
+                vis[st.top()-'a']=0;
+                st.pop();
             }
+            st.push(c);
+            vis[c-'a']=1;
         }
         string ans="";
         while(!st.empty()){
