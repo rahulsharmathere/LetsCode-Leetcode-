@@ -1,38 +1,35 @@
 #define MOD 12345
-
 class Solution {
 public:
     vector<vector<int>> constructProductMatrix(vector<vector<int>>& grid) {
-        int rows = grid.size();
-        int cols = grid[0].size();
-        int total = rows * cols;
-        vector<int> flat(total);
-        for(int r = 0; r < rows; r++){
-            for(int c = 0; c < cols; c++){
-                flat[r * cols + c] = grid[r][c];
+        int n=grid.size();
+        int m=grid[0].size();
+        int total=n*m;
+        vector<int>flatt(total);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                flatt[i*m+j]=grid[i][j];
             }
         }
-
-        vector<int> pref(total), suff(total);
-
-        pref[0] = 1;
-        for(int i = 1; i < total; i++){
-            pref[i] = (1LL * pref[i-1] * flat[i-1]) % MOD;
+        vector<int>pref(total);
+        pref[0]=1;
+        for(int i=1;i<total;i++){
+            pref[i]=(1LL*pref[i-1]*flatt[i-1])%MOD;
+        }
+        vector<int>suff(total);
+        suff[total-1]=1;
+        for(int j=total-2;j>=0;j--){
+            suff[j]=(1LL*suff[j+1]*flatt[j+1])%MOD;
         }
 
-        suff[total-1] = 1;
-        for(int i = total-2; i >= 0; i--){
-            suff[i] = (1LL * suff[i+1] * flat[i+1]) % MOD;
-        }
+        vector<vector<int>>ans(n,vector<int>(m,0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                int ind=i*m+j;
+                ans[i][j]=(pref[ind]*suff[ind])%MOD;
 
-        vector<vector<int>> result(rows, vector<int>(cols));
-        for(int r = 0; r < rows; r++){
-            for(int c = 0; c < cols; c++){
-                int idx = r * cols + c;
-                result[r][c] = (pref[idx] * suff[idx]) % MOD;
             }
         }
-
-        return result;
+        return ans;
     }
 };
