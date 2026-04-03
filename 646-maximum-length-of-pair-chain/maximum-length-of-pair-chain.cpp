@@ -6,19 +6,20 @@ public:
             return 0;
         }
         //
-        if(dp[i][last+1001]!=-1)return dp[i][last+1001];
+        if(dp[i][last+1]!=-1)return dp[i][last+1];
         //take
         int ans1=0;
-        if(pairs[i][0]>last)ans1=1+solve(pairs,i+1,pairs[i][1],dp);
+        if(last==-1 || pairs[i][0]>pairs[last][1])ans1=1+solve(pairs,i+1,i,dp);
+       
         //dont take
         int ans2=0+solve(pairs,i+1,last,dp);
-        return dp[i][last+1001]=max(ans1,ans2);
+        return dp[i][last+1]=max(ans1,ans2);
     }
     int findLongestChain(vector<vector<int>>& pairs) {
         int n=pairs.size();
         sort(pairs.begin(),pairs.end());
-        vector<vector<int>>dp(n,vector<int>(2002,-1));
+        vector<vector<int>>dp(n,vector<int>(n+1,-1));
         int i=0;
-        return solve(pairs,i,-1001,dp);
+        return solve(pairs,i,-1,dp);
     }
 };
