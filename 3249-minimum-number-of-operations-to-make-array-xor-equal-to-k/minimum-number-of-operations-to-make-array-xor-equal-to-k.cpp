@@ -1,28 +1,9 @@
 class Solution {
 public:
     int minOperations(vector<int>& nums, int k) {
-        int n=nums.size();
-        int ans=0;
-        for(int i=0;i<32;i++){
-            int cnt=0;
-            for(int j=0;j<n;j++){
-                int num=nums[j];
-                if(num & (1<<i)){
-                    cnt++;
-                }
-            }
-            if(cnt & 1){
-                if(k&(1<<i)){
-                    continue;
-                }else{
-                    ans++;
-                }
-            }else{
-                if(k&(1<<i)){
-                    ans++;
-                }
-            }
-        }
-        return ans;
+        int xr = 0;
+        for(int x : nums)
+            xr ^= x;
+        return __builtin_popcount(xr ^ k);
     }
 };
