@@ -5,14 +5,12 @@ public:
         int l=0;
         int r=0;
         int maxLen=0;
-        map<char,int>mp;
+        vector<int>last(256,-1);
         while(r<n){
-            while(mp.find(s[r])!=mp.end()){
-                mp[s[l]]--;
-                if(mp[s[l]]==0)mp.erase(s[l]);
-                l++;
+            if(last[s[r]]>=l){
+                l=last[s[r]]+1;
             }
-            mp[s[r]]++;
+            last[s[r]]=r;
             maxLen=max(maxLen,r-l+1);
             r++;
         }
