@@ -11,10 +11,10 @@ public:
     }
     int maximumCandies(vector<int>& candies, long long k) {
         int n=candies.size();
-        int maxi=INT_MIN;
-        for(auto it:candies)maxi=max(maxi,it);
+        // int maxi=INT_MIN;
+        // for(auto it:candies)maxi=max(maxi,it);
         int l=1;
-        int h=maxi;
+        int h=*max_element(candies.begin(),candies.end());
         int ans=0;
         while(l<=h){
             int m=l-(l-h)/2;
