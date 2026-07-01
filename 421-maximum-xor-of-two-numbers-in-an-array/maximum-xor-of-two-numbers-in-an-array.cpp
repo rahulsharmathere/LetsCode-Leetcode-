@@ -1,40 +1,82 @@
-class TrieNode{
-    public:
-    vector<TrieNode *>v;
-    TrieNode() : v(2,nullptr){}
+class Node{
+public:
+    Node* arr[2];
+
+    Node(){
+        arr[0]=arr[1]=NULL;
+    }
+
+    bool checkKey(int bit){
+        return arr[bit]!=NULL;
+    }
+
+    void insert(int bit,Node* newNode){
+        arr[bit]=newNode;
+    }
+
+    Node* getNode(int bit){
+        return arr[bit];
+    }
 };
+
+class Trie{
+public:
+    Node* root;
+
+    Trie(){
+        root=new Node();
+    }
+
+    void insert(int num){
+        Node* node=root;
+
+        for(int i=31;i>=0;i--){
+            int bit=(num>>i)&1;
+
+            if(!node->checkKey(bit)){
+                node->insert(bit,new Node());
+            }
+
+            node=node->getNode(bit);
+        }
+    }
+
+    int getMaxXor(int num){
+        Node* node=root;
+        int ans=0;
+
+        for(int i=31;i>=0;i--){
+            int bit=(num>>i)&1;
+
+            if(node->checkKey(1-bit)){
+                ans|=(1<<i);
+                node=node->getNode(1-bit);
+            }
+            else{
+                node=node->getNode(bit);
+            }
+        }
+
+        return ans;
+    }
+};
+
 class Solution {
 public:
-    TrieNode *root = new TrieNode();
     int findMaximumXOR(vector<int>& nums) {
-        int maxa = 0;
-        for(int i:nums){
-            string str = bitset<32>(i).to_string();
-            TrieNode* node = root;
-            for(char ch:str){
-                if(node->v[ch-'0'] == nullptr){
-                    node->v[ch-'0'] = new TrieNode();
-                }
-                node = node->v[ch-'0'];
-            }
+
+        Trie* trie=new Trie();
+
+        for(int num:nums){
+            trie->insert(num);
         }
-        for(int i:nums){
-            string str = bitset<32>(i).to_string();
-            TrieNode* node = root;
-            string temp = "";
-            for(char ch:str){
-                int ele = ch -'0' ^ 1;
-                if(node->v[ele] != nullptr){
-                    node = node->v[ele];
-                    temp += to_string(ele);
-                }
-                else{
-                    node = node->v[ch-'0'];
-                    temp += ch;
-                }
-            }
-            maxa = max(maxa,stoi(temp,0,2) ^ i);
+
+        int ans=0;
+
+        for(int num:nums){
+            ans=max(ans,trie->getMaxXor(num));
         }
-        return maxa;
+
+        return ans;
     }
 };
