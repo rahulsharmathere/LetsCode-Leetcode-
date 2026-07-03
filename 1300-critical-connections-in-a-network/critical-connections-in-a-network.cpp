@@ -1,6 +1,7 @@
 class Solution {
 public:
-    void dfs(int time,map<int,vector<int>>&adj,vector<int>&tin,vector<int>&low,vector<vector<int>>&ans,map<int,bool>&vis,int node,int par){
+    int time=1;
+    void dfs(map<int,vector<int>>&adj,vector<int>&tin,vector<int>&low,vector<vector<int>>&ans,map<int,bool>&vis,int node,int par){
         vis[node]=true;
         tin[node]=time;
         low[node]=time;
@@ -9,12 +10,12 @@ public:
         for(auto it:adj[node]){
             if(it==par)continue;
             if(!vis[it]){
-                dfs(time,adj,tin,low,ans,vis,it,node);
+                dfs(adj,tin,low,ans,vis,it,node);
                 low[node]=min(low[node],low[it]);
                 if( low[it]>tin[node])ans.push_back({it,node});
             }
             else{
-                low[node]=min(low[node],low[it]);
+                low[node]=min(low[node],tin[it]);
             }
         }
 
@@ -32,7 +33,7 @@ public:
         vector<int>low(n,-1);//lowest tin of all adj nodes (except parent)
         vector<vector<int>>ans;
         map<int,bool>vis;
-        dfs(1,adj,tin,low,ans,vis,0,-1);
+        dfs(adj,tin,low,ans,vis,0,-1);
         return ans;
     }
 };
