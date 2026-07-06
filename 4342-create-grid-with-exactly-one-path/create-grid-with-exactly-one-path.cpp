@@ -1,14 +1,12 @@
 class Solution {
 public:
     vector<string> createGrid(int m, int n) {
-        vector<string>ans;
+        vector<string>ans(m,string(n,'#'));
+        for(int i=0;i<n;i++){
+            ans[0][i]='.';
+        }
         for(int i=0;i<m;i++){
-            string s;
-            for(int j=0;j<n;j++){
-                if(i==0 || j==n-1)s.push_back('.');
-                else s.push_back('#');
-            }
-            ans.push_back(s);
+            ans[i][n-1]='.';
         }
         return ans;
         
