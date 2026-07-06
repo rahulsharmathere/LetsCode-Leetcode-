@@ -1,7 +1,7 @@
 class Solution {
 public:
     int maxValidPairSum(vector<int>& nums, int k) {
-        //TLE
+        
         int n=nums.size();
         int i=0;
         int maxi=-1;
