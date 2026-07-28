@@ -1,22 +1,27 @@
 class Solution {
 public:
     int countSubstrings(string s) {
-        string t="#";
-        for (char c:s) {
-            t+=c;
-            t+='#';
-        }
-        int cnt=0;
-        for (int i=0;i<t.size();i++){
-            int j=i;
-            int k=i;
-            while (j>=0 && k<t.size() && t[j]==t[k]){
-                if(t[j]!='#')   
-                    cnt++;
-                j--;
-                k++;
+        int n = s.size();
+        int ans = 0;
+
+        for (int c = 0; c < n; c++) {
+
+            int l = c, r = c;
+            while (l >= 0 && r < n && s[l] == s[r]) {
+                ans++;
+                l--;
+                r++;
+            }
+
+            l = c;
+            r = c + 1;
+            while (l >= 0 && r < n && s[l] == s[r]) {
+                ans++;
+                l--;
+                r++;
             }
         }
-        return cnt;
+
+        return ans;
     }
 };
