@@ -5,8 +5,7 @@ public:
         if(k==n)return "0";
         stack<char>st;
         for(int i=0;i<n;i++){
-            char dig=num[i];
-            while(!st.empty() && (st.top()) > dig  && k>0){
+            while(!st.empty() && st.top()>num[i] && k>0){
                 st.pop();
                 k--;
             }
@@ -16,19 +15,19 @@ public:
             st.pop();
             k--;
         }
-
-        string s;
+        num="";
+        
         while(!st.empty()){
-            char c=st.top();
-            s.push_back(c);
+            num+=st.top();
             st.pop();
         }
-        reverse(s.begin(),s.end());
-        
-        int i=0;
-        while(i<s.size() && s[i]=='0')i++;
-        s=s.substr(i); 
+        reverse(num.begin(),num.end());
 
-        return s.empty() ? "0" :s;
+        int i=0;
+        while(i<num.size() && num[i]=='0')i++;
+        num=num.substr(i); 
+
+        return num.empty() ? "0" :num;
+
     }
 };
