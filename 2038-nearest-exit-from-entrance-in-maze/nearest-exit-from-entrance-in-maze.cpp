@@ -23,7 +23,6 @@ public:
             int r = pos.first;
             int c = pos.second;
 
-            // Don't check the entrance as an exit.
             if ((r != sr || c != sc) &&
                 (r == 0 || r == n - 1 || c == 0 || c == m - 1)) {
                 return dist;
