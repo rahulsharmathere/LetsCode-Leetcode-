@@ -1,19 +1,12 @@
 class Solution {
 public:
     vector<int> resultArray(vector<int>& nums) {
-        int n=nums.size();
-        //n oprnts
-        vector<int>ans1;
-        vector<int>ans2;
-        ans1.push_back(nums[0]);
-        ans2.push_back(nums[1]);
-        for(int i=2;i<n;i++){
-            if(ans1.back() > ans2.back())ans1.push_back(nums[i]);
-            else ans2.push_back(nums[i]);
+        vector<int> A[2]={{nums[0]}, {nums[1]}};
+        const int n=nums.size();
+        for(int i=2; i<n; i++){
+            A[A[0].back()<=A[1].back()].push_back(nums[i]);
         }
-        for(auto it:ans2){
-            ans1.push_back(it);
-        }
-        return ans1;
+        A[0].insert(A[0].end(), A[1].begin(), A[1].end());
+        return A[0];
     }
 };
