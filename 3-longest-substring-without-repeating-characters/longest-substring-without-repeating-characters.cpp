@@ -5,12 +5,13 @@ public:
         int l=0;
         int r=0;
         int maxLen=0;
-        vector<int>last(256,-1);
+        unordered_map<char,int>mp;
         while(r<n){
-            if(last[s[r]]>=l){
-                l=last[s[r]]+1;
+            while(mp[s[r]]!=0){
+                mp[s[l]]--;
+                l++;
             }
-            last[s[r]]=r;
+            mp[s[r]]++;
             maxLen=max(maxLen,r-l+1);
             r++;
         }
