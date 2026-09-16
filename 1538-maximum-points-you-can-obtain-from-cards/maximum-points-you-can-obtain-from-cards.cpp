@@ -1,35 +1,25 @@
 class Solution {
 public:
     int maxScore(vector<int>& cardPoints, int k) {
-        int n = cardPoints.size();
-
-        // We leave n-k cards in the middle.
-        int windowSize = n - k;
-
-        int total = 0;
-        for (int x : cardPoints) {
-            total += x;
+        int n=cardPoints.size();
+        // leave minimum card sum (n-k) cards
+        k=n-k;
+        //find minimum window
+        int total=0;
+        for(auto it:cardPoints)total+=it;
+        int sum=0;
+        for(int r=0;r<k;r++){
+            sum+=cardPoints[r];
         }
-
-        // Sum of the first window of size n-k
-        int sum = 0;
-        for (int i = 0; i < windowSize; i++) {
-            sum += cardPoints[i];
-        }
-
-        int miniSum = sum;
-
-        int l = 0;
-
-        // Slide the window
-        for (int r = windowSize; r < n; r++) {
-            sum += cardPoints[r];
-            sum -= cardPoints[l];
+        int l=0;
+        int r=k;
+        int miniSum=sum;
+        while(r<n){
+            sum=sum-cardPoints[l]+cardPoints[r];
+            miniSum=min(miniSum,sum);
+            r++;
             l++;
-
-            miniSum = min(miniSum, sum);
         }
-
-        return total - miniSum;
+        return total-miniSum;
     }
 };
